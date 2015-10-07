@@ -15,8 +15,8 @@ upgraderThread chanMVar n = do job
     where
         job = do
             vlist <- takeMVar chanMVar
-            let reslist = strictList $ map id vlist
-            -- let !reslist = strictList $ map id vlist
+            -- let reslist = strictList $ map id vlist
+            let !reslist = strictList $ map id vlist
             putMVar chanMVar reslist
             upgraderThread chanMVar (n - 1)
 

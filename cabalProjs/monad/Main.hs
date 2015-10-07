@@ -17,7 +17,7 @@ instance Applicative Thunk where
 data Thunk a = T (a, Int)
 
 instance Monad Thunk where
-  T (x, n) >>= f = 
+  T (!x, !n) >>= f = 
     let T (x', m) = f x
     in T (x', m + n)
 
@@ -28,7 +28,7 @@ emptyThunk = return 0
 
 buildThunk :: Int -> Thunk a -> Thunk a
 buildThunk 0 t = t
-buildThunk n t = buildThunk (n - 1) (t >>= increaseThunk)
+buildThunk n !t = buildThunk (n - 1) (t >>= increaseThunk)
   where increaseThunk x = T (x, 1)
 
 thunk :: Thunk Int
